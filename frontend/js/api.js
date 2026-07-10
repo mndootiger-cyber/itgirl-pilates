@@ -7,9 +7,8 @@
 
 class PilatesApiService {
   constructor() {
-    // غيّر السطر ده لو السيرفر شغال على رابط تاني (مثلاً Render):
-    // this.baseUrl = 'https://your-app.onrender.com/api';
-    this.baseUrl = 'http://localhost:5000/api';
+    // رابط الباك إند الفعلي على Railway (بعد رفع الموقع)
+    this.baseUrl = 'https://itgirl-pilates-production.up.railway.app/api';
   }
 
   /* ── جلب كل المنتجات ─────────────────────────────── */
