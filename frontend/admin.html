@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AM SPORT Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik+Dirt&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>.sidebar-logo { font-family: 'Rubik Dirt', 'Bebas Neue', sans-serif !important; }</style>
+  <script>
+    if (!localStorage.getItem('adminToken')) window.location.replace('login.html');
+  </script>
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-logo">AM <em>SPORT</em> ADMIN</div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">الرئيسية</div>
+      <a class="sidebar-link active" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        لوحة التحكم
+      </a>
+
+      <div class="sidebar-label" style="margin-top:0.5rem">المتجر</div>
+      <a class="sidebar-link" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+        المنتجات
+      </a>
+      <a class="sidebar-link" href="#">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+        الطلبات
+      </a>
+
+      <div class="sidebar-label" style="margin-top:0.5rem">الإعدادات</div>
+      <a class="sidebar-link" href="index.html" target="_blank">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        عرض المتجر
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" id="logoutBtn">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <button class="mobile-topbar-toggle icon-btn" onclick="openSidebar()" aria-label="القائمة">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <div class="topbar-title">لوحة التحكم</div>
+          <div class="topbar-meta" id="dateDisplay"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="admin-body">
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></div>
+          <div class="stat-label">إجمالي المنتجات</div>
+          <div class="stat-value" id="totalProducts">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="stat-label">متوفر في المخزن</div>
+          <div class="stat-value" id="inStockProducts">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+          <div class="stat-label">ملابس رياضية</div>
+          <div class="stat-value" id="clothingCount">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="stat-label">معدات وأدوات</div>
+          <div class="stat-value" id="equipmentCount">0</div>
+        </div>
+      </div>
+
+      <!-- Add Product Form -->
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <div class="admin-card-title">إضافة منتج جديد</div>
+            <div class="admin-card-subtitle">أضف قطعة جديدة إلى تشكيلة AM SPORT</div>
+          </div>
+        </div>
+
+        <form id="addProductForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">اسم المنتج</label>
+              <input type="text" id="name" class="form-input" placeholder="مثال: طقم ليفل هيد الرياضي" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">القسم</label>
+              <select id="category" class="form-select">
+                <option value="clothing">ملابس رياضية</option>
+                <option value="equipment">معدات وأدوات</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">السعر (بالجنيه المصري)</label>
+              <input type="number" id="price" class="form-input" placeholder="1850" required min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط صورة المنتج</label>
+              <input type="url" id="imageUrl" class="form-input" placeholder="https://raw.githubusercontent.com/username/repo/main/image.jpg" required>
+              <div style="font-size:0.75rem;color:var(--dim);margin-top:0.35rem">
+                ارفع الصورة على GitHub وحط رابط الـ Raw هنا
+              </div>
+              <img id="imagePreview" class="img-preview" style="margin-top:0.75rem">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">الوصف</label>
+              <textarea id="description" class="form-textarea" rows="3" placeholder="اكتب وصفاً تفصيلياً للمنتج..." required></textarea>
+            </div>
+          </div>
+
+          <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap">
+            <button type="submit" class="btn btn-gold" id="submitBtn">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              حفظ المنتج
+            </button>
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('addProductForm').reset(); document.getElementById('imagePreview').style.display='none';">
+              إعادة تعيين
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Products Table -->
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <div class="admin-card-title">المنتجات الحالية</div>
+            <div class="admin-card-subtitle">إدارة جميع منتجات التشكيلة</div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fetchAdminProducts()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            تحديث
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>اسم المنتج</th>
+                <th>القسم</th>
+                <th>السعر</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr>
+                <td colspan="5">
+                  <div class="empty-table">
+                    <svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+                    <p>جارٍ تحميل المنتجات...</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /admin-body -->
+  </div><!-- /admin-main -->
+</div><!-- /admin-layout -->
+
+<div id="toast-container"></div>
+
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  // Date display
+  const now = new Date();
+  document.getElementById('dateDisplay').textContent = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Mobile sidebar
+  function openSidebar() {
+    document.getElementById('adminSidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('open');
+  }
+  function closeSidebar() {
+    document.getElementById('adminSidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  }
+
+  // Icon btn helper
+  document.querySelectorAll('.icon-btn').forEach(b => {
+    b.style.cssText = 'display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;color:var(--dim);transition:color .2s,background .2s;';
+  });
+</script>
+</body>
+</html>

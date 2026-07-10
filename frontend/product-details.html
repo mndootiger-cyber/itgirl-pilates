@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="تفاصيل المنتج - AM SPORT Premium Collection">
+  <title>تفاصيل المنتج | AM SPORT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Alexandria:wght@200;300;400;500&family=Rubik+Dirt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .product-detail-container {
+      max-width: 1200px;
+      margin: 100px auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .product-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .product-main-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--r-lg);
+      background: var(--muted);
+    }
+
+    .product-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .product-thumb {
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      opacity: 0.6;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .product-thumb:hover,
+    .product-thumb.active {
+      opacity: 1;
+      border-color: var(--gold);
+    }
+
+    .product-info h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .product-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-rating {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+    }
+
+    .star { color: var(--gold); font-size: 1rem; }
+
+    .product-pricing {
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-main {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .price-original {
+      text-decoration: line-through;
+      color: var(--text-dim);
+      font-size: 1.2rem;
+    }
+
+    .product-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--r-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .product-description {
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .product-options {
+      margin-bottom: 2rem;
+    }
+
+    .option-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .option-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .option-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .option-btn {
+      padding: 0.7rem 1.2rem;
+      border: 2px solid var(--border);
+      border-radius: var(--r-md);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .option-btn:hover {
+      border-color: var(--gold);
+    }
+
+    .option-btn.selected {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .color-swatch:hover,
+    .color-swatch.selected {
+      border-color: var(--gold);
+      transform: scale(1.1);
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      width: fit-content;
+      padding: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--r-sm);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--muted);
+    }
+
+    .qty-input {
+      width: 50px;
+      text-align: center;
+      background: transparent;
+      color: var(--text);
+      border: none;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-add-cart {
+      flex: 1;
+      padding: 1rem;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: var(--r-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-add-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201, 169, 110, 0.3);
+    }
+
+    .btn-wishlist {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+      border-radius: var(--r-md);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-wishlist:hover {
+      border-color: var(--gold);
+    }
+
+    .btn-wishlist.liked {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    .stock-status {
+      padding: 0.8rem;
+      border-radius: var(--r-md);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    .stock-status.in-stock {
+      background: rgba(76, 175, 80, 0.1);
+      color: #4CAF50;
+    }
+
+    .stock-status.out-of-stock {
+      background: rgba(244, 67, 54, 0.1);
+      color: #F44336;
+    }
+
+    .related-products {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 2rem;
+    }
+
+    .related-products h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .product-detail-container {
+        grid-template-columns: 1fr;
+        margin-top: 80px;
+      }
+
+      .product-thumbnails {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-brand">AM <em>SPORT</em></div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<div id="toast-container"></div>
+
+<!-- HEADER -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="index.html" class="header-logo">AM <em>SPORT</em></a>
+
+    <nav class="main-nav" aria-label="التنقل الرئيسي">
+      <a href="index.html" class="nav-item">المجموعة</a>
+      <a href="index.html#grid-section" class="nav-item">ملابس رياضية</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="السلة">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="cartBadge" class="cart-badge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PRODUCT DETAIL -->
+<div class="product-detail-container" id="productContainer">
+  <div class="product-gallery">
+    <img id="mainImage" src="" alt="صورة المنتج" class="product-main-image">
+    <div class="product-thumbnails" id="thumbnails"></div>
+  </div>
+
+  <div class="product-info">
+    <div class="product-meta">
+      <div id="badgeContainer"></div>
+      <div class="product-rating" id="ratingContainer"></div>
+    </div>
+
+    <h1 id="productName"></h1>
+    
+    <div class="product-pricing">
+      <span id="mainPrice" class="price-main"></span>
+      <span id="originalPrice" class="price-original"></span>
+    </div>
+
+    <div id="stockStatus" class="stock-status"></div>
+
+    <p class="product-description" id="description"></p>
+
+    <div class="product-options">
+      <!-- Sizes -->
+      <div class="option-group" id="sizesGroup" style="display: none;">
+        <label class="option-label">الحجم</label>
+        <div class="option-values" id="sizesContainer"></div>
+      </div>
+
+      <!-- Colors -->
+      <div class="option-group" id="colorsGroup" style="display: none;">
+        <label class="option-label">اللون</label>
+        <div class="option-values" id="colorsContainer"></div>
+      </div>
+
+      <!-- Quantity -->
+      <div class="option-group">
+        <label class="option-label">الكمية</label>
+        <div class="quantity-selector">
+          <button class="qty-btn" onclick="decreaseQty()">−</button>
+          <input type="number" id="quantity" class="qty-input" value="1" min="1" max="99">
+          <button class="qty-btn" onclick="increaseQty()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-actions">
+      <button class="btn-add-cart" id="addCartBtn" onclick="sendToWhatsApp()" style="background: #25D366;">اطلب عبر واتساب</button>
+      <button class="btn-wishlist" id="wishlistBtn" onclick="toggleWishlistProduct()">❤️</button>
+    </div>
+  </div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+<div class="related-products">
+  <h2>منتجات ذات صلة</h2>
+  <div class="products-grid" id="relatedProducts"></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const api = new PilatesApiService();
+  let currentProduct = null;
+  let selectedSize = null;
+  let selectedColor = null;
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+    
+    if (productId) {
+      const products = await api.getProducts();
+      currentProduct = products.find(p => p._id === productId);
+      
+      if (currentProduct) {
+        addRV(currentProduct);
+        renderProductDetail(currentProduct);
+        renderRelatedProducts(products);
+      }
+    }
+  });
+
+  function renderProductDetail(product) {
+    // Main image and thumbnails
+    document.getElementById('mainImage').src = api.resolveImageUrl(product.image);
+    
+    const thumbnails = document.getElementById('thumbnails');
+    const images = [product.image]; // Add more images if available in product
+    thumbnails.innerHTML = images.map((img, idx) => `
+      <img src="${api.resolveImageUrl(img)}" alt="صورة ${idx + 1}" class="product-thumb ${idx === 0 ? 'active' : ''}" onclick="changeMainImage(this)">
+    `).join('');
+
+    // Product info
+    document.getElementById('productName').textContent = product.name_ar || product.name;
+    document.getElementById('description').textContent = product.description || '';
+    
+    // Badge
+    if (product.badge) {
+      document.getElementById('badgeContainer').innerHTML = `<span class="product-badge">${product.badge}</span>`;
+    }
+
+    // Rating
+    if (product.rating) {
+      const stars = Array(Math.round(product.rating)).fill('⭐').join('');
+      document.getElementById('ratingContainer').innerHTML = `${stars} (${product.rating})`;
+    }
+
+    // Price
+    document.getElementById('mainPrice').textContent = `${Number(product.price).toLocaleString('ar-EG')} ج.م`;
+    if (product.original_price) {
+      document.getElementById('originalPrice').textContent = `${Number(product.original_price).toLocaleString('ar-EG')} ج.م`;
+    }
+
+    // Stock status
+    const stockDiv = document.getElementById('stockStatus');
+    if (product.in_stock) {
+      stockDiv.className = 'stock-status in-stock';
+      stockDiv.textContent = '✓ المنتج متاح الآن';
+    } else {
+      stockDiv.className = 'stock-status out-of-stock';
+      stockDiv.textContent = '✗ المنتج غير متوفر حالياً';
+    }
+
+    // Sizes
+    if (product.sizes && product.sizes.length > 0) {
+      document.getElementById('sizesGroup').style.display = 'block';
+      document.getElementById('sizesContainer').innerHTML = product.sizes.map(size => `
+        <button class="option-btn" onclick="selectSize('${size}')">${size}</button>
+      `).join('');
+      selectedSize = product.sizes[0];
+    }
+
+    // Colors
+    if (product.colors && product.colors.length > 0) {
+      document.getElementById('colorsGroup').style.display = 'block';
+      document.getElementById('colorsContainer').innerHTML = product.colors.map(color => {
+        const hexColor = COLOR_HEX[color] || '#ccc';
+        return `
+          <div class="color-swatch" style="background: ${hexColor};" 
+               onclick="selectColor('${color}')" 
+               title="${color}"
+               data-color="${color}"></div>
+        `;
+      }).join('');
+      selectedColor = product.colors[0];
+    }
+
+    // Wishlist button state
+    const wishlistBtn = document.getElementById('wishlistBtn');
+    const inWishlist = getWishlist().some(p => p._id === product._id);
+    if (inWishlist) {
+      wishlistBtn.classList.add('liked');
+    }
+  }
+
+  function renderRelatedProducts(products) {
+    const related = products.filter(p => 
+      p.category === currentProduct.category && p._id !== currentProduct._id
+    ).slice(0, 4);
+
+    const grid = document.getElementById('relatedProducts');
+    grid.innerHTML = related.map(p => `
+      <div class="product-card" onclick="window.location.href='product-details.html?id=${p._id}'" style="cursor: pointer;">
+        <div class="product-card-img">
+          <img src="${api.resolveImageUrl(p.image)}" alt="${p.name}" loading="lazy">
+        </div>
+        <div class="product-card-info">
+          <div class="product-card-name">${p.name_ar || p.name}</div>
+          <div class="product-card-price">${Number(p.price).toLocaleString('ar-EG')} ج.م</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function changeMainImage(img) {
+    document.getElementById('mainImage').src = img.src;
+    document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+    img.classList.add('active');
+  }
+
+  function selectSize(size) {
+    selectedSize = size;
+    document.querySelectorAll('#sizesContainer .option-btn').forEach(btn => btn.classList.remove('selected'));
+    event.target.classList.add('selected');
+  }
+
+  function selectColor(color) {
+    selectedColor = color;
+    document.querySelectorAll('#colorsContainer .color-swatch').forEach(s => s.classList.remove('selected'));
+    event.target.classList.add('selected');
+  }
+
+  function increaseQty() {
+    const input = document.getElementById('quantity');
+    input.value = parseInt(input.value) + 1;
+  }
+
+  function decreaseQty() {
+    const input = document.getElementById('quantity');
+    if (parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+
+  function addToCart() {
+    if (!selectedSize && currentProduct.sizes?.length > 0) {
+      showToast('اختر الحجم من فضلك', 'error');
+      return;
+    }
+    if (!selectedColor && currentProduct.colors?.length > 0) {
+      showToast('اختر اللون من فضلك', 'error');
+      return;
+    }
+
+    const quantity = parseInt(document.getElementById('quantity').value);
+    cart.addToCart(currentProduct, selectedSize || 'one-size', selectedColor || 'default', quantity);
+  }
+
+  function toggleWishlistProduct() {
+    const btn = document.getElementById('wishlistBtn');
+    if (toggleWishlist(currentProduct)) {
+      btn.classList.add('liked');
+    } else {
+      btn.classList.remove('liked');
+    }
+  }
+
+  // Cart button navigation
+  document.getElementById('cartBtn')?.addEventListener('click', () => {
+    window.location.href = 'cart.html';
+  });
+</script>
+</body>
+</html>

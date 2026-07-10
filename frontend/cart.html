@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>السلة | AM SPORT</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --card:#141414;
+    --border:#262626;
+    --gold:#c9a227;
+    --gold-light:#e0c158;
+    --text:#f5f5f3;
+    --muted:#9a9a9a;
+    --whatsapp:#25D366;
+    --whatsapp-dark:#1ea952;
+    --danger:#e05252;
+    --success:#3fbf6a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Tahoma','Segoe UI',sans-serif;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ── HEADER ───────────────────────────────── */
+  header.site-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 40px;border-bottom:1px solid var(--border);
+    position:sticky;top:0;background:rgba(10,10,10,0.92);backdrop-filter:blur(8px);
+    z-index:50;
+  }
+  .logo{font-size:22px;font-weight:800;letter-spacing:2px;color:var(--gold-light);}
+  .nav-links{display:flex;gap:32px;font-size:15px;color:#ddd;}
+  .nav-links a:hover{color:var(--gold-light);}
+  .header-icons{display:flex;align-items:center;gap:20px;}
+  .cart-icon-wrap{position:relative;display:flex;}
+  .cart-badge{
+    position:absolute;top:-8px;right:-8px;background:var(--gold);color:#111;
+    font-size:11px;font-weight:700;min-width:18px;height:18px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;padding:0 4px;
+  }
+  @media(max-width:768px){
+    .nav-links{display:none;}
+    header.site-header{padding:14px 18px;}
+  }
+
+  /* ── PAGE ─────────────────────────────────── */
+  .page-title{
+    font-size:34px;font-weight:800;padding:36px 40px 10px;
+  }
+  .cart-page{
+    display:grid;grid-template-columns:1fr 380px;gap:28px;
+    padding:10px 40px 60px;align-items:start;
+  }
+  @media(max-width:900px){
+    .cart-page{grid-template-columns:1fr;padding:10px 18px 40px;}
+    .page-title{padding:28px 18px 10px;font-size:26px;}
+  }
+
+  /* ── CART ITEMS ───────────────────────────── */
+  .cart-items{display:flex;flex-direction:column;gap:16px;}
+  .cart-item{
+    display:grid;grid-template-columns:90px 1fr auto;gap:16px;
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:14px;align-items:center;
+  }
+  .cart-item-img{
+    width:90px;height:90px;object-fit:cover;border-radius:10px;background:#1c1c1c;
+  }
+  .cart-item-name{font-size:15px;font-weight:600;margin-bottom:6px;}
+  .cart-item-meta{
+    display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:10px;
+  }
+  .color-dot{width:11px;height:11px;border-radius:50%;border:1px solid #444;display:inline-block;}
+  .qty-ctrl{
+    display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);
+    border-radius:8px;overflow:hidden;width:fit-content;
+  }
+  .qty-ctrl button{
+    background:#1c1c1c;color:var(--text);border:none;width:30px;height:30px;font-size:16px;
+  }
+  .qty-ctrl button:hover{background:#262626;}
+  .qty-num{width:34px;text-align:center;font-size:14px;font-weight:600;}
+  .cart-item-right{
+    display:flex;flex-direction:column;align-items:flex-end;gap:10px;height:100%;justify-content:space-between;
+  }
+  .cart-item-price{font-size:15px;font-weight:700;color:var(--gold-light);white-space:nowrap;}
+  .cart-item-remove{
+    display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--danger);
+  }
+  .cart-item-remove:hover{opacity:0.75;}
+
+  @media(max-width:520px){
+    .cart-item{grid-template-columns:70px 1fr;}
+    .cart-item-right{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;}
+  }
+
+  /* ── EMPTY CART ───────────────────────────── */
+  .cart-empty{
+    grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);
+  }
+  .cart-empty-icon{color:var(--gold);margin-bottom:18px;}
+  .cart-empty h2{color:var(--text);font-size:22px;margin-bottom:10px;}
+  .cart-empty p{max-width:420px;margin:0 auto 26px;line-height:1.7;font-size:14px;}
+  .cart-empty-btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#111;
+    padding:12px 26px;border-radius:10px;font-weight:700;font-size:14px;
+  }
+  .cart-empty-btn:hover{background:var(--gold-light);}
+
+  /* ── SUMMARY CARD ─────────────────────────── */
+  .summary-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:26px;position:sticky;top:90px;
+  }
+  .summary-title{font-size:19px;font-weight:800;margin-bottom:20px;}
+  .summary-row{
+    display:flex;justify-content:space-between;font-size:14px;color:var(--muted);
+    padding:10px 0;border-bottom:1px solid var(--border);
+  }
+  .summary-row span:last-child{color:var(--text);font-weight:600;}
+  .summary-row.total{
+    border-bottom:none;margin-top:6px;padding-top:16px;
+  }
+  .summary-row.total span{font-size:18px;font-weight:800;color:var(--gold-light);}
+
+  .whatsapp-btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    background:var(--whatsapp);color:#fff;border:none;padding:15px;border-radius:12px;
+    font-size:15.5px;font-weight:700;margin-top:22px;transition:background .15s;
+  }
+  .whatsapp-btn:hover{background:var(--whatsapp-dark);}
+  .whatsapp-btn:disabled{background:#3a3a3a;color:#777;cursor:not-allowed;}
+
+  .continue-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    background:transparent;color:var(--text);border:1px solid var(--border);
+    padding:14px;border-radius:12px;font-size:14.5px;font-weight:600;margin-top:12px;
+  }
+  .continue-btn:hover{border-color:var(--gold);color:var(--gold-light);}
+
+  .privacy-note{
+    display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted);
+    margin-top:18px;line-height:1.7;
+  }
+  .privacy-note svg{flex-shrink:0;margin-top:2px;color:var(--gold);}
+
+  .trust-row{
+    display:flex;justify-content:space-around;margin-top:26px;padding-top:22px;
+    border-top:1px solid var(--border);
+  }
+  .trust-item{
+    display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11.5px;
+    color:var(--muted);text-align:center;
+  }
+  .trust-item svg{color:var(--gold);}
+
+  /* ── TOASTS ───────────────────────────────── */
+  #toast-container{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;gap:10px;z-index:999;width:min(90vw,360px);
+  }
+  .toast{
+    display:flex;align-items:center;gap:10px;background:#1c1c1c;border:1px solid var(--border);
+    padding:13px 16px;border-radius:10px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,0.4);
+    animation:toast-in .25s ease;
+  }
+  .toast.success{border-color:var(--success);color:var(--success);}
+  .toast.error{border-color:var(--danger);color:var(--danger);}
+  .toast.info{border-color:var(--gold);color:var(--gold-light);}
+  @keyframes toast-in{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header" id="siteHeader">
+  <div class="logo">AM SPORT</div>
+  <nav class="nav-links">
+    <a href="index.html">ملابس رياضية</a>
+    <a href="index.html">المجموعة</a>
+  </nav>
+  <div class="header-icons">
+    <a href="cart.html" class="cart-icon-wrap" aria-label="السلة">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </a>
+  </div>
+</header>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<h1 class="page-title">السلة</h1>
+
+<!-- CART PAGE -->
+<div class="cart-page" id="cartPage">
+
+  <!-- ITEMS -->
+  <div class="cart-items" id="cartItemsContainer"></div>
+
+  <!-- ORDER SUMMARY -->
+  <aside class="summary-card">
+    <div class="summary-title">ملخص الطلب</div>
+
+    <div class="summary-row">
+      <span>القطع المختارة</span>
+      <span id="subtotal">0 ج.م</span>
+    </div>
+    <div class="summary-row">
+      <span>الشحن</span>
+      <span id="shipping">0 ج.م</span>
+    </div>
+    <div class="summary-row total">
+      <span>الإجمالي</span>
+      <span id="total">0 ج.م</span>
+    </div>
+
+    <button class="whatsapp-btn" onclick="checkoutViaWhatsApp()">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.19 3.03 14.7 2 12.04 2zm5.8 14.11c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.12-.42-.13-.96-.31-1.65-.6-2.91-1.26-4.81-4.17-4.95-4.36-.15-.19-1.19-1.58-1.19-3.02s.75-2.15 1.02-2.44c.27-.29.58-.36.78-.36h.55c.18 0 .42-.03.65.5.24.55.82 1.94.9 2.08.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.3z"/>
+      </svg>
+      إتمام الطلب عبر واتساب
+    </button>
+
+    <a href="index.html" class="continue-btn">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      متابعة التسوق
+    </a>
+
+    <div class="privacy-note">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      <span>بياناتك محمية. سيتم التواصل معك عبر واتساب لتأكيد الطلب وتفاصيل الشحن.</span>
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-item">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        أصلي 100%
+      </div>
+      <div class="trust-item">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>
+        </svg>
+        إرجاع مجاني
+      </div>
+      <div class="trust-item">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+        شحن سريع
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>

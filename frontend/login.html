@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AM SPORT | Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik+Dirt&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #080808; --char: #111113; --graph: #1C1C1E;
+      --border: rgba(255,255,255,0.07); --border-h: rgba(255,255,255,0.14);
+      --gold: #C9A96E; --gold-l: #DFC08F; --white: #FAFAF8;
+      --text: #E8E8E6; --dim: #8A8A8E; --red: #f87171;
+      --ease-out: cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--black); color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100svh; padding: 1.5rem;
+      -webkit-font-smoothing: antialiased;
+      position: relative; overflow: hidden;
+    }
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+    }
+    /* Glow */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse 50% 40% at 50% 60%, rgba(201,169,110,0.06), transparent);
+      pointer-events: none;
+    }
+
+    .login-wrap {
+      position: relative; z-index: 1;
+      width: min(420px, 100%);
+      animation: fadeUp 0.7s var(--ease-out);
+    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } }
+
+    .login-logo { font-family: 'Rubik Dirt', 'Bebas Neue', sans-serif !important;
+      text-align: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      margin-bottom: 2.5rem;
+    }
+    .login-logo em { color: var(--gold); font-style: normal; }
+
+    .login-card {
+      background: rgba(17,17,19,0.85);
+      backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: clamp(1.75rem, 5vw, 2.5rem);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .login-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+    .login-subtitle { font-size: 0.8rem; color: var(--dim); margin-bottom: 2rem; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.5rem;
+    }
+    input {
+      width: 100%; padding: 0.85rem 1rem;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      color: var(--white); border-radius: 8px;
+      font: inherit; font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.12);
+    }
+    input::placeholder { color: var(--dim); }
+
+    .btn-login {
+      width: 100%; padding: 0.95rem;
+      background: var(--gold);
+      color: var(--black);
+      font: inherit; font-size: 0.85rem;
+      font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none; border-radius: 8px;
+      cursor: pointer; margin-top: 0.5rem;
+      position: relative; overflow: hidden;
+      transition: filter 0.2s, transform 0.15s;
+    }
+    .btn-login::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.15);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-login:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-login:hover::after { opacity: 1; }
+    .btn-login:active { transform: none; }
+    .btn-login.loading { pointer-events: none; opacity: 0.7; }
+
+    .error-msg {
+      display: none; margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 8px;
+      color: var(--red);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .back-link {
+      display: block; text-align: center; margin-top: 1.5rem;
+      font-size: 0.8rem; color: var(--dim);
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-logo">AM <em>SPORT</em></div>
+
+    <div class="login-card">
+      <div class="login-title">لوحة التحكم</div>
+      <p class="login-subtitle">سجّل دخولك للوصول إلى لوحة إدارة المتجر</p>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input type="email" id="email" placeholder="admin@itgirlpilates.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">كلمة المرور</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-login" id="loginBtn">تسجيل الدخول</button>
+        <div class="error-msg" id="errorMsg"></div>
+      </form>
+    </div>
+
+    <a href="index.html" class="back-link">← العودة إلى المتجر</a>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
