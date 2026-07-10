@@ -4,7 +4,7 @@
  */
 
 const token   = localStorage.getItem('adminToken');
-const api     = new PilatesApiService();
+
 
 /* ── TOAST ─────────────────────────────────────────────── */
 function showToast(message, type = 'info') {
