@@ -9,7 +9,13 @@ const productSchema = new mongoose.Schema({
     colors: {
         type: [String],
         default: [],
-        enum: ['Black', 'White', 'Charcoal', 'Graphite', 'Ivory', 'Grey'],
+        enum: [
+            'Black', 'White', 'Charcoal', 'Graphite', 'Ivory', 'Grey',
+            'BrightRed', 'Burgundy', 'WineRed', 'CoralRed',
+            'HotPink', 'BabyPink', 'OrchidPink', 'DustyMauve',
+            'Beige', 'LightGray', 'CharcoalGray',
+            'RoyalBlue', 'SkyBlue', 'NavyBlue', 'OliveGreen',
+        ],
     },
     colorImages: {
         type: Object,

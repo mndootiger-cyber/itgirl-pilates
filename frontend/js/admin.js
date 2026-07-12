@@ -27,13 +27,55 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   window.location.replace('login.html');
 });
 
-/* ── COLOR IMAGE INPUT TOGGLE ────────────────────────────── */
-document.querySelectorAll('.color-opt').forEach(cb => {
-  cb.addEventListener('change', () => {
-    const input = document.querySelector(`.color-img-input[data-color="${cb.value}"]`);
-    if (input) input.style.display = cb.checked ? 'block' : 'none';
+/* ── COLOR DEFINITIONS ────────────────────────────────────── */
+const COLOR_DEFS = [
+  { value: 'Black',        hex: '#111111', label: 'أسود' },
+  { value: 'White',        hex: '#FAFAF8', label: 'أبيض' },
+  { value: 'Charcoal',     hex: '#3D3D40', label: 'فحمي' },
+  { value: 'Graphite',     hex: '#5A5A5E', label: 'جرافيت' },
+  { value: 'Ivory',        hex: '#F5F0E8', label: 'عاجي' },
+  { value: 'Grey',         hex: '#8A8A8E', label: 'رمادي' },
+  { value: 'BrightRed',    hex: '#E30613', label: 'أحمر فاقع' },
+  { value: 'Burgundy',     hex: '#6D071A', label: 'خمري' },
+  { value: 'WineRed',      hex: '#722F37', label: 'أحمر نبيتي' },
+  { value: 'CoralRed',     hex: '#FF6B5B', label: 'أحمر مرجاني' },
+  { value: 'HotPink',      hex: '#FF69B4', label: 'وردي فاقع' },
+  { value: 'BabyPink',     hex: '#F4C2C2', label: 'وردي فاتح' },
+  { value: 'OrchidPink',   hex: '#DA95C4', label: 'وردي أوركيد' },
+  { value: 'DustyMauve',   hex: '#B784A0', label: 'موف ترابي' },
+  { value: 'Beige',        hex: '#E8D5B7', label: 'بيج' },
+  { value: 'LightGray',    hex: '#D3D3D3', label: 'رمادي فاتح' },
+  { value: 'CharcoalGray', hex: '#4A4A4D', label: 'رمادي فحمي' },
+  { value: 'RoyalBlue',    hex: '#4169E1', label: 'أزرق ملكي' },
+  { value: 'SkyBlue',      hex: '#87CEEB', label: 'أزرق سماوي' },
+  { value: 'NavyBlue',     hex: '#1B1F3B', label: 'كحلي' },
+  { value: 'OliveGreen',   hex: '#708238', label: 'أخضر زيتوني' },
+];
+
+/* ── RENDER COLOR OPTIONS ─────────────────────────────────── */
+function renderColorOptions() {
+  const container = document.getElementById('colorOptionsContainer');
+  if (!container) return;
+
+  container.innerHTML = COLOR_DEFS.map(c => `
+    <div class="color-row">
+      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+        <input type="checkbox" class="color-opt" value="${c.value}" data-hex="${c.hex}">
+        <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:${c.hex};border:1px solid var(--border-h)"></span> ${c.label}
+      </label>
+      <input type="url" class="color-img-input" data-color="${c.value}" placeholder="رابط صورة لون ${c.label} (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+    </div>
+  `).join('');
+
+  // Toggle image input visibility when a color is checked
+  container.querySelectorAll('.color-opt').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const input = container.querySelector(`.color-img-input[data-color="${cb.value}"]`);
+      if (input) input.style.display = cb.checked ? 'block' : 'none';
+    });
   });
-});
+}
+renderColorOptions();
 
 /* ── IMAGE URL PREVIEW ───────────────────────────────────── */
 document.getElementById('imageUrl')?.addEventListener('input', (e) => {

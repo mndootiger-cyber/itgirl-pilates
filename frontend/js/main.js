@@ -19,12 +19,38 @@ const SUB_LABELS = {
 
 /* ── COLOR MAP ──────────────────────────────────────────── */
 const COLOR_HEX = {
-  'Black':    '#111',
-  'White':    '#FAFAF8',
-  'Charcoal': '#3D3D40',
-  'Graphite': '#5A5A5E',
-  'Ivory':    '#F5F0E8',
-  'Grey':     '#8A8A8E',
+  'Black':        '#111111',
+  'White':        '#FAFAF8',
+  'Charcoal':     '#3D3D40',
+  'Graphite':     '#5A5A5E',
+  'Ivory':        '#F5F0E8',
+  'Grey':         '#8A8A8E',
+  'BrightRed':    '#E30613',
+  'Burgundy':     '#6D071A',
+  'WineRed':      '#722F37',
+  'CoralRed':     '#FF6B5B',
+  'HotPink':      '#FF69B4',
+  'BabyPink':     '#F4C2C2',
+  'OrchidPink':   '#DA95C4',
+  'DustyMauve':   '#B784A0',
+  'Beige':        '#E8D5B7',
+  'LightGray':    '#D3D3D3',
+  'CharcoalGray': '#4A4A4D',
+  'RoyalBlue':    '#4169E1',
+  'SkyBlue':      '#87CEEB',
+  'NavyBlue':     '#1B1F3B',
+  'OliveGreen':   '#708238',
+};
+
+/* ── COLOR ARABIC LABELS ────────────────────────────────── */
+const COLOR_LABELS_AR = {
+  'Black': 'أسود', 'White': 'أبيض', 'Charcoal': 'فحمي', 'Graphite': 'جرافيت',
+  'Ivory': 'عاجي', 'Grey': 'رمادي', 'BrightRed': 'أحمر فاقع', 'Burgundy': 'خمري',
+  'WineRed': 'أحمر نبيتي', 'CoralRed': 'أحمر مرجاني', 'HotPink': 'وردي فاقع',
+  'BabyPink': 'وردي فاتح', 'OrchidPink': 'وردي أوركيد', 'DustyMauve': 'موف ترابي',
+  'Beige': 'بيج', 'LightGray': 'رمادي فاتح', 'CharcoalGray': 'رمادي فحمي',
+  'RoyalBlue': 'أزرق ملكي', 'SkyBlue': 'أزرق سماوي', 'NavyBlue': 'كحلي',
+  'OliveGreen': 'أخضر زيتوني',
 };
 
 /* ── TOAST ──────────────────────────────────────────────── */
@@ -363,7 +389,7 @@ function openModal(product, api) {
     colorsGroup.style.display = 'block';
     colorsEl.innerHTML = product.colors.map(c => `
       <button class="color-swatch" data-color="${c}" title="${c}" style="--swatch: ${COLOR_HEX[c] || '#888'}">
-        ${c === 'White' || c === 'Ivory' ? '<span class="swatch-border"></span>' : ''}
+        ${['White','Ivory','BabyPink','LightGray','Beige','SkyBlue'].includes(c) ? '<span class="swatch-border"></span>' : ''}
       </button>
     `).join('');
     colorLabel.textContent = '';
@@ -372,7 +398,7 @@ function openModal(product, api) {
         colorsEl.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedColor = btn.dataset.color;
-        colorLabel.textContent = selectedColor;
+        colorLabel.textContent = COLOR_LABELS_AR[selectedColor] || selectedColor;
 
         // تبديل الصورة الرئيسية حسب اللون المختار (لو فيه صورة مخصصة لهذا اللون)
         const modalImgEl = document.getElementById('modalImg');
