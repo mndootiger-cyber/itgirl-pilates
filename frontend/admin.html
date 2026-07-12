@@ -138,30 +138,74 @@
             </div>
             <div class="form-group full">
               <label class="form-label">الألوان المتاحة (اختياري)</label>
-              <div class="color-checks" style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:0.25rem">
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="Black">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#111;border:1px solid var(--border-h)"></span> أسود
+              <div class="color-checks" style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.25rem">
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="Black" data-hex="#111">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#111;border:1px solid var(--border-h)"></span> أسود
+                  </label>
+                  <input type="url" class="color-img-input" data-color="Black" placeholder="رابط صورة اللون الأسود (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="White" data-hex="#FAFAF8">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#FAFAF8;border:1px solid var(--border-h)"></span> أبيض
+                  </label>
+                  <input type="url" class="color-img-input" data-color="White" placeholder="رابط صورة اللون الأبيض (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="Charcoal" data-hex="#3D3D40">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#3D3D40;border:1px solid var(--border-h)"></span> فحمي
+                  </label>
+                  <input type="url" class="color-img-input" data-color="Charcoal" placeholder="رابط صورة اللون الفحمي (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="Graphite" data-hex="#5A5A5E">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#5A5A5E;border:1px solid var(--border-h)"></span> جرافيت
+                  </label>
+                  <input type="url" class="color-img-input" data-color="Graphite" placeholder="رابط صورة اللون الجرافيت (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="Ivory" data-hex="#F5F0E8">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#F5F0E8;border:1px solid var(--border-h)"></span> عاجي
+                  </label>
+                  <input type="url" class="color-img-input" data-color="Ivory" placeholder="رابط صورة اللون العاجي (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+                <div class="color-row">
+                  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
+                    <input type="checkbox" class="color-opt" value="Grey" data-hex="#8A8A8E">
+                    <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#8A8A8E;border:1px solid var(--border-h)"></span> رمادي
+                  </label>
+                  <input type="url" class="color-img-input" data-color="Grey" placeholder="رابط صورة اللون الرمادي (اختياري)" style="display:none;margin-top:0.4rem;width:100%;padding:0.5rem 0.75rem;background:var(--graph);border:1px solid var(--border);color:var(--white);border-radius:var(--r-sm);font-size:0.8rem">
+                </div>
+              </div>
+              <div style="font-size:0.72rem;color:var(--dim);margin-top:0.5rem">
+                لو سبت رابط صورة اللون فاضي، هتتعرض صورة المنتج الأساسية بدلاً منه.
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">المقاسات المتاحة (اختياري)</label>
+              <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.25rem">
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="XS"> XS
                 </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="White">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#FAFAF8;border:1px solid var(--border-h)"></span> أبيض
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="S"> S
                 </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="Charcoal">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#3D3D40;border:1px solid var(--border-h)"></span> فحمي
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="M"> M
                 </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="Graphite">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#5A5A5E;border:1px solid var(--border-h)"></span> جرافيت
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="L"> L
                 </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="Ivory">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#F5F0E8;border:1px solid var(--border-h)"></span> عاجي
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="XL"> XL
                 </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer">
-                  <input type="checkbox" class="color-opt" value="Grey">
-                  <span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:#8A8A8E;border:1px solid var(--border-h)"></span> رمادي
+                <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;cursor:pointer">
+                  <input type="checkbox" class="size-opt" value="XXL"> XXL
                 </label>
               </div>
             </div>
@@ -172,7 +216,7 @@
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               حفظ المنتج
             </button>
-            <button type="button" class="btn btn-outline" onclick="document.getElementById('addProductForm').reset(); document.getElementById('imagePreview').style.display='none';">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('addProductForm').reset(); document.getElementById('imagePreview').style.display='none'; document.querySelectorAll('.color-img-input').forEach(function(i){i.style.display='none';});">
               إعادة تعيين
             </button>
           </div>

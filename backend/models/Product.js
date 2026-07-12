@@ -11,6 +11,15 @@ const productSchema = new mongoose.Schema({
         default: [],
         enum: ['Black', 'White', 'Charcoal', 'Graphite', 'Ivory', 'Grey'],
     },
+    colorImages: {
+        type: Object,
+        default: {},
+    },
+    sizes: {
+        type: [String],
+        default: [],
+        enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    },
 }, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);

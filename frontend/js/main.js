@@ -373,6 +373,12 @@ function openModal(product, api) {
         btn.classList.add('active');
         selectedColor = btn.dataset.color;
         colorLabel.textContent = selectedColor;
+
+        // تبديل الصورة الرئيسية حسب اللون المختار (لو فيه صورة مخصصة لهذا اللون)
+        const modalImgEl = document.getElementById('modalImg');
+        const colorSpecificImage = product.colorImages && product.colorImages[selectedColor];
+        modalImgEl.src = api.resolveImageUrl(colorSpecificImage || product.image);
+
         updateWhatsApp(product);
       });
     });

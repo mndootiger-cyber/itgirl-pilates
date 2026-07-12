@@ -27,6 +27,14 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   window.location.replace('login.html');
 });
 
+/* ── COLOR IMAGE INPUT TOGGLE ────────────────────────────── */
+document.querySelectorAll('.color-opt').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const input = document.querySelector(`.color-img-input[data-color="${cb.value}"]`);
+    if (input) input.style.display = cb.checked ? 'block' : 'none';
+  });
+});
+
 /* ── IMAGE URL PREVIEW ───────────────────────────────────── */
 document.getElementById('imageUrl')?.addEventListener('input', (e) => {
   const preview = document.getElementById('imagePreview');
@@ -102,6 +110,12 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
 
   const submitBtn = document.getElementById('submitBtn');
   const selectedColors = Array.from(document.querySelectorAll('.color-opt:checked')).map(c => c.value);
+  const selectedSizes  = Array.from(document.querySelectorAll('.size-opt:checked')).map(s => s.value);
+  const colorImages = {};
+  selectedColors.forEach(colorName => {
+    const input = document.querySelector(`.color-img-input[data-color="${colorName}"]`);
+    if (input && input.value.trim()) colorImages[colorName] = input.value.trim();
+  });
   const payload = {
     name:        document.getElementById('name').value.trim(),
     category:    document.getElementById('category').value,
@@ -110,6 +124,8 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     image:       document.getElementById('imageUrl').value ||
                  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop',
     colors:      selectedColors,
+    colorImages: colorImages,
+    sizes:       selectedSizes,
   };
 
   if (!payload.name || !payload.price || !payload.description) {
@@ -125,6 +141,7 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     if (res.ok) {
       showToast(`تمت إضافة "${payload.name}" بنجاح! ✓`, 'success');
       document.getElementById('addProductForm').reset();
+      document.querySelectorAll('.color-img-input').forEach(inp => { inp.style.display = 'none'; });
       const preview = document.getElementById('imagePreview');
       if (preview) { preview.src = ''; preview.style.display = 'none'; }
       fetchAdminProducts();
