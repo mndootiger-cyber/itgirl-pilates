@@ -21,6 +21,23 @@ export const createProductUnit = async (req, res) => {
     }
 };
 
+// Update existing luxury unit
+export const updateProductUnit = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, category, price, image, description, colors, colorImages, sizes } = req.body;
+        const updated = await Product.findByIdAndUpdate(
+            id,
+            { name, category, price, image, description, colors, colorImages, sizes },
+            { new: true, runValidators: true }
+        );
+        if (!updated) return res.status(404).json({ message: 'Item not found inside database.' });
+        res.status(200).json({ success: true, data: updated });
+    } catch (error) {
+        res.status(400).json({ success: false, message: 'Invalid data provided.' });
+    }
+};
+
 // Delete luxury product unit
 export const deleteProductUnit = async (req, res) => {
     try {

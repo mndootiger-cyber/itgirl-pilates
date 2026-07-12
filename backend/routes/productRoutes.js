@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchAllProducts, createProductUnit, deleteProductUnit } from '../controllers/productController.js';
+import { fetchAllProducts, createProductUnit, updateProductUnit, deleteProductUnit } from '../controllers/productController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { upload } from '../middleware/uploadMiddleware.js';
 
@@ -10,6 +10,7 @@ router.route('/')
     .post(protect, createProductUnit);
 
 router.route('/:id')
+    .put(protect, updateProductUnit)
     .delete(protect, deleteProductUnit);
 
 // مسار رفع الصور (مستقل لسرعة الاستجابة)
