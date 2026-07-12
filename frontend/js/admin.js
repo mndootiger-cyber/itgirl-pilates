@@ -96,6 +96,7 @@ document.getElementById('imageUrl')?.addEventListener('input', (e) => {
 async function fetchAdminProducts() {
   try {
     const products = await api.getAllProducts();
+    window._adminProducts = products; // نحتفظ بنسخة لاستخدامها عند التعديل
 
     // Stats
     document.getElementById('totalProducts').textContent   = products.length;
@@ -127,7 +128,15 @@ async function fetchAdminProducts() {
           <td><span class="td-name">${p.name}</span></td>
           <td><span class="td-cat">${catLabel}</span></td>
           <td><span class="td-price">${price} ج.م</span></td>
-          <td>
+          <td style="display:flex;gap:0.4rem">
+            <button
+              class="btn btn-outline btn-sm"
+              onclick="editProduct('${p._id}')"
+              aria-label="تعديل ${p.name}"
+            >
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              تعديل
+            </button>
             <button
               class="btn btn-danger btn-sm"
               onclick="deleteProduct('${p._id}')"
@@ -146,11 +155,12 @@ async function fetchAdminProducts() {
   }
 }
 
-/* ── ADD PRODUCT ─────────────────────────────────────────── */
+/* ── ADD / UPDATE PRODUCT ────────────────────────────────── */
 document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const submitBtn = document.getElementById('submitBtn');
+  const editingId = document.getElementById('editingId').value;
   const selectedColors = Array.from(document.querySelectorAll('.color-opt:checked')).map(c => c.value);
   const selectedSizes  = Array.from(document.querySelectorAll('.size-opt:checked')).map(s => s.value);
   const colorImages = {};
@@ -178,29 +188,84 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
   if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<span>جارٍ الحفظ...</span>'; }
 
   try {
-    const res = await api.createProduct(payload, token);
+    const res = editingId
+      ? await api.updateProduct(editingId, payload, token)
+      : await api.createProduct(payload, token);
 
     if (res.ok) {
-      showToast(`تمت إضافة "${payload.name}" بنجاح! ✓`, 'success');
-      document.getElementById('addProductForm').reset();
-      document.querySelectorAll('.color-img-input').forEach(inp => { inp.style.display = 'none'; });
-      const preview = document.getElementById('imagePreview');
-      if (preview) { preview.src = ''; preview.style.display = 'none'; }
+      showToast(editingId ? `تم تحديث "${payload.name}" بنجاح! ✓` : `تمت إضافة "${payload.name}" بنجاح! ✓`, 'success');
+      resetProductForm();
       fetchAdminProducts();
     } else {
       const data = await res.json().catch(() => ({}));
-      showToast(data.message || 'حدث خطأ أثناء الإضافة.', 'error');
+      showToast(data.message || 'حدث خطأ أثناء الحفظ.', 'error');
     }
   } catch (err) {
-    console.error('[Admin] createProduct:', err);
+    console.error('[Admin] saveProduct:', err);
     showToast('خطأ في الاتصال بالسيرفر.', 'error');
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> حفظ المنتج`;
+      submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <span id="submitBtnText">${document.getElementById('editingId').value ? 'حفظ التعديلات' : 'حفظ المنتج'}</span>`;
     }
   }
 });
+
+/* ── EDIT PRODUCT: تعبئة الفورم ببيانات المنتج المختار ──── */
+window.editProduct = (id) => {
+  const product = (window._adminProducts || []).find(p => p._id === id);
+  if (!product) {
+    showToast('تعذر العثور على بيانات المنتج.', 'error');
+    return;
+  }
+
+  document.getElementById('editingId').value   = product._id;
+  document.getElementById('name').value        = product.name || '';
+  document.getElementById('category').value    = product.category || 'clothing';
+  document.getElementById('price').value       = product.price || '';
+  document.getElementById('description').value = product.description || '';
+  document.getElementById('imageUrl').value    = product.image || '';
+
+  const preview = document.getElementById('imagePreview');
+  if (preview && product.image) {
+    preview.src = product.image;
+    preview.style.display = 'block';
+  }
+
+  // تحديد الألوان المختارة سابقًا وتعبئة صور كل لون
+  document.querySelectorAll('.color-opt').forEach(cb => {
+    const isSelected = (product.colors || []).includes(cb.value);
+    cb.checked = isSelected;
+    const imgInput = document.querySelector(`.color-img-input[data-color="${cb.value}"]`);
+    if (imgInput) {
+      imgInput.style.display = isSelected ? 'block' : 'none';
+      imgInput.value = (product.colorImages && product.colorImages[cb.value]) || '';
+    }
+  });
+
+  // تحديد المقاسات المختارة سابقًا
+  document.querySelectorAll('.size-opt').forEach(cb => {
+    cb.checked = (product.sizes || []).includes(cb.value);
+  });
+
+  document.getElementById('formTitle').textContent    = 'تعديل المنتج';
+  document.getElementById('formSubtitle').textContent = `تعديل بيانات "${product.name}"`;
+  document.getElementById('submitBtnText').textContent = 'حفظ التعديلات';
+
+  document.querySelector('.admin-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+/* ── RESET FORM (إضافة جديدة أو إلغاء التعديل) ───────────── */
+window.resetProductForm = () => {
+  document.getElementById('addProductForm').reset();
+  document.getElementById('editingId').value = '';
+  document.querySelectorAll('.color-img-input').forEach(inp => { inp.style.display = 'none'; inp.value = ''; });
+  const preview = document.getElementById('imagePreview');
+  if (preview) { preview.src = ''; preview.style.display = 'none'; }
+  document.getElementById('formTitle').textContent    = 'إضافة منتج جديد';
+  document.getElementById('formSubtitle').textContent = 'أضف قطعة جديدة إلى تشكيلة AM SPORT';
+  document.getElementById('submitBtnText').textContent = 'حفظ المنتج';
+};
 
 /* ── DELETE PRODUCT ──────────────────────────────────────── */
 window.deleteProduct = async (id) => {

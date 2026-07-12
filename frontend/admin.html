@@ -102,12 +102,13 @@
       <div class="admin-card">
         <div class="admin-card-header">
           <div>
-            <div class="admin-card-title">إضافة منتج جديد</div>
-            <div class="admin-card-subtitle">أضف قطعة جديدة إلى تشكيلة AM SPORT</div>
+            <div class="admin-card-title" id="formTitle">إضافة منتج جديد</div>
+            <div class="admin-card-subtitle" id="formSubtitle">أضف قطعة جديدة إلى تشكيلة AM SPORT</div>
           </div>
         </div>
 
         <form id="addProductForm" novalidate>
+          <input type="hidden" id="editingId" value="">
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">اسم المنتج</label>
@@ -171,9 +172,9 @@
           <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap">
             <button type="submit" class="btn btn-gold" id="submitBtn">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              حفظ المنتج
+              <span id="submitBtnText">حفظ المنتج</span>
             </button>
-            <button type="button" class="btn btn-outline" onclick="document.getElementById('addProductForm').reset(); document.getElementById('imagePreview').style.display='none'; document.querySelectorAll('.color-img-input').forEach(function(i){i.style.display='none';});">
+            <button type="button" class="btn btn-outline" onclick="resetProductForm()">
               إعادة تعيين
             </button>
           </div>

@@ -30,6 +30,18 @@ class PilatesApiService {
     });
   }
 
+  /* ── تحديث منتج موجود ─────────────────────────────── */
+  async updateProduct(id, payload, token) {
+    return fetch(`${this.baseUrl}/products/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(payload),
+    });
+  }
+
   /* ── حذف منتج ─────────────────────────────────────── */
   async deleteProduct(id, token) {
     return fetch(`${this.baseUrl}/products/${id}`, {
