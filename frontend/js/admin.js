@@ -118,17 +118,35 @@ async function fetchAdminProducts() {
       return;
     }
 
-    tbody.innerHTML = products.map(p => {
+    tbody.innerHTML = products.map((p, idx) => {
       const imgSrc   = api.resolveImageUrl(p.image);
       const catLabel = p.category === 'clothing' ? 'ملابس رياضية' : 'معدات';
       const price    = Number(p.price).toLocaleString('ar-EG');
+      const isFirst  = idx === 0;
+      const isLast   = idx === products.length - 1;
       return `
         <tr>
           <td><img src="${imgSrc}" class="td-img" alt="${p.name}" loading="lazy" onerror="this.style.opacity=0.3"></td>
           <td><span class="td-name">${p.name}</span></td>
           <td><span class="td-cat">${catLabel}</span></td>
           <td><span class="td-price">${price} ج.م</span></td>
-          <td style="display:flex;gap:0.4rem">
+          <td style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <button
+              class="btn btn-outline btn-sm"
+              onclick="moveProduct('${p._id}', 'up')"
+              aria-label="تحريك ${p.name} لأعلى"
+              ${isFirst ? 'disabled style="opacity:0.35;cursor:not-allowed"' : ''}
+            >
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </button>
+            <button
+              class="btn btn-outline btn-sm"
+              onclick="moveProduct('${p._id}', 'down')"
+              aria-label="تحريك ${p.name} لأسفل"
+              ${isLast ? 'disabled style="opacity:0.35;cursor:not-allowed"' : ''}
+            >
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </button>
             <button
               class="btn btn-outline btn-sm"
               onclick="editProduct('${p._id}')"
@@ -265,6 +283,32 @@ window.resetProductForm = () => {
   document.getElementById('formTitle').textContent    = 'إضافة منتج جديد';
   document.getElementById('formSubtitle').textContent = 'أضف قطعة جديدة إلى تشكيلة AM SPORT';
   document.getElementById('submitBtnText').textContent = 'حفظ المنتج';
+};
+
+/* ── MOVE PRODUCT UP/DOWN (تغيير ترتيب العرض) ────────────── */
+window.moveProduct = async (id, direction) => {
+  const products = window._adminProducts || [];
+  const idx = products.findIndex(p => p._id === id);
+  if (idx === -1) return;
+
+  const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+  if (swapIdx < 0 || swapIdx >= products.length) return;
+
+  const current  = products[idx];
+  const swapWith = products[swapIdx];
+  const currentOrder = current.order ?? idx;
+  const swapOrder    = swapWith.order ?? swapIdx;
+
+  try {
+    await Promise.all([
+      api.updateProduct(current._id,  { ...current,  order: swapOrder },   token),
+      api.updateProduct(swapWith._id, { ...swapWith, order: currentOrder }, token),
+    ]);
+    fetchAdminProducts();
+  } catch (err) {
+    console.error('[Admin] moveProduct:', err);
+    showToast('خطأ في تغيير الترتيب.', 'error');
+  }
 };
 
 /* ── DELETE PRODUCT ──────────────────────────────────────── */
