@@ -13,8 +13,8 @@ export const fetchAllProducts = async (req, res) => {
 // Insert new luxury unit
 export const createProductUnit = async (req, res) => {
     try {
-        const { name, category, price, image, description } = req.body;
-        const newProduct = await Product.create({ name, category, price, image, description });
+        const { name, category, price, image, description, colors } = req.body;
+        const newProduct = await Product.create({ name, category, price, image, description, colors });
         res.status(201).json({ success: true, data: newProduct });
     } catch (error) {
         res.status(400).json({ success: false, message: 'Invalid data provided.' });

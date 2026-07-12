@@ -5,7 +5,12 @@ const productSchema = new mongoose.Schema({
     category: { type: String, required: true, enum: ['clothing', 'equipment'] },
     price: { type: Number, required: true },
     image: { type: String, required: true },
-    description: { type: String, required: true }
+    description: { type: String, required: true },
+    colors: {
+        type: [String],
+        default: [],
+        enum: ['Black', 'White', 'Charcoal', 'Graphite', 'Ivory', 'Grey'],
+    },
 }, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);

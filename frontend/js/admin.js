@@ -101,6 +101,7 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
   e.preventDefault();
 
   const submitBtn = document.getElementById('submitBtn');
+  const selectedColors = Array.from(document.querySelectorAll('.color-opt:checked')).map(c => c.value);
   const payload = {
     name:        document.getElementById('name').value.trim(),
     category:    document.getElementById('category').value,
@@ -108,6 +109,7 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     description: document.getElementById('description').value.trim(),
     image:       document.getElementById('imageUrl').value ||
                  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop',
+    colors:      selectedColors,
   };
 
   if (!payload.name || !payload.price || !payload.description) {
