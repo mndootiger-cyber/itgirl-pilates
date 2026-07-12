@@ -287,23 +287,22 @@ window.resetProductForm = () => {
 
 /* ── MOVE PRODUCT UP/DOWN (تغيير ترتيب العرض) ────────────── */
 window.moveProduct = async (id, direction) => {
-  const products = window._adminProducts || [];
+  const products = [...(window._adminProducts || [])];
   const idx = products.findIndex(p => p._id === id);
   if (idx === -1) return;
 
   const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
   if (swapIdx < 0 || swapIdx >= products.length) return;
 
-  const current  = products[idx];
-  const swapWith = products[swapIdx];
-  const currentOrder = current.order ?? idx;
-  const swapOrder    = swapWith.order ?? swapIdx;
+  // بدّل مكان المنتجين في القائمة
+  [products[idx], products[swapIdx]] = [products[swapIdx], products[idx]];
 
   try {
-    await Promise.all([
-      api.updateProduct(current._id,  { ...current,  order: swapOrder },   token),
-      api.updateProduct(swapWith._id, { ...swapWith, order: currentOrder }, token),
-    ]);
+    // نحفظ ترتيب كل المنتجات من جديد حسب موضعها الفعلي في القائمة
+    // (يضمن ترقيم متسلسل صحيح دائمًا، حتى لو كانت القيم القديمة متساوية)
+    await Promise.all(
+      products.map((p, i) => api.updateProduct(p._id, { ...p, order: i }, token))
+    );
     fetchAdminProducts();
   } catch (err) {
     console.error('[Admin] moveProduct:', err);
