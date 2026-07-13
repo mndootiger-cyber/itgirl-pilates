@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   allProducts = await api.getAllProducts();
   renderGrid(allProducts);
   renderRecentlyViewed(api);
+  renderSubPills();
 
   // Women-only platform: no gender filter needed
   // renderSubPills() will show only women's subcategories

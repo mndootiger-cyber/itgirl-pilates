@@ -30,6 +30,11 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    subcategory: {
+        type: String,
+        default: '',
+        enum: ['', 'tshirt', 'shorts', 'hoodie', 'pants', 'tank', 'jacket', 'bra', 'leggings', 'longsleeve'],
+    },
 }, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);
