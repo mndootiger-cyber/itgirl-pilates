@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
     subcategory: {
         type: String,
         default: '',
-        enum: ['', 'tshirt', 'shorts', 'hoodie', 'pants', 'tank', 'jacket', 'bra', 'leggings', 'longsleeve'],
+        trim: true,
     },
     styleTag: {
         type: String,
