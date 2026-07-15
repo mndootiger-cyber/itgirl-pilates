@@ -35,6 +35,11 @@ const productSchema = new mongoose.Schema({
         default: '',
         enum: ['', 'tshirt', 'shorts', 'hoodie', 'pants', 'tank', 'jacket', 'bra', 'leggings', 'longsleeve'],
     },
+    styleTag: {
+        type: String,
+        default: '',
+        trim: true,
+    },
 }, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);

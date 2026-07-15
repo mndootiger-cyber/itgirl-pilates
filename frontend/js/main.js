@@ -176,19 +176,22 @@ function renderRecentlyViewed(api) {
 
 /* ── MAIN INIT ───────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  const api          = new PilatesApiService();
-  const productsGrid = document.getElementById('productsGrid');
-  const itemsCount   = document.getElementById('itemsCount');
-  const subPillsWrap = document.getElementById('subPills');
+  const api           = new PilatesApiService();
+  const productsGrid  = document.getElementById('productsGrid');
+  const itemsCount    = document.getElementById('itemsCount');
+  const subPillsWrap  = document.getElementById('subPills');
+  const stylePillsWrap = document.getElementById('stylePills');
 
   let allProducts     = [];
   let activeSub       = 'all';
+  let activeStyle     = 'all';
 
   // Load products
   allProducts = await api.getAllProducts();
   renderGrid(allProducts);
   renderRecentlyViewed(api);
   renderSubPills();
+  renderStylePills();
 
   // Women-only platform: no gender filter needed
   // renderSubPills() will show only women's subcategories
@@ -213,7 +216,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       pill.addEventListener('click', () => {
         subPillsWrap.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
-        activeSub = pill.dataset.sub;
+        activeSub   = pill.dataset.sub;
+        activeStyle = 'all'; // نرجّع الفلتر الفرعي الثاني للوضع الافتراضي عند تغيير القسم
+        renderStylePills();
+        applyFilters();
+      });
+    });
+  }
+
+  /* ── STYLE PILLS (فلتر فرعي ثاني، زي: بجيب / من غير جيب) ── */
+  function renderStylePills() {
+    // بس المنتجات اللي في القسم المختار حاليًا
+    const scoped = activeSub === 'all'
+      ? allProducts
+      : allProducts.filter(p => p.subcategory === activeSub);
+
+    const styles = [...new Set(scoped.map(p => p.styleTag).filter(Boolean))];
+
+    if (!styles.length) {
+      stylePillsWrap.style.display = 'none';
+      stylePillsWrap.innerHTML = '';
+      return;
+    }
+
+    stylePillsWrap.style.display = 'flex';
+    stylePillsWrap.innerHTML = `
+      <button class="sub-pill active" data-style="all">الكل</button>
+      ${styles.map(s => `<button class="sub-pill" data-style="${s}">${s}</button>`).join('')}
+    `;
+
+    stylePillsWrap.querySelectorAll('.sub-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        stylePillsWrap.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeStyle = pill.dataset.style;
         applyFilters();
       });
     });
@@ -226,8 +262,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         p.name?.toLowerCase().includes(query) ||
         p.name_ar?.toLowerCase().includes(query) ||
         p.description?.toLowerCase().includes(query);
-      const matchSub    = activeSub === 'all' || p.subcategory === activeSub;
-      return matchSearch && matchSub;
+      const matchSub   = activeSub === 'all' || p.subcategory === activeSub;
+      const matchStyle = activeStyle === 'all' || p.styleTag === activeStyle;
+      return matchSearch && matchSub && matchStyle;
     });
     renderGrid(filtered);
   }

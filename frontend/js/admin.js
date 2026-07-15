@@ -190,6 +190,7 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     name:        document.getElementById('name').value.trim(),
     category:    document.getElementById('category').value,
     subcategory: document.getElementById('subcategory').value,
+    styleTag:    document.getElementById('styleTag').value.trim(),
     price:       parseFloat(document.getElementById('price').value),
     description: document.getElementById('description').value.trim(),
     image:       document.getElementById('imageUrl').value ||
@@ -242,6 +243,7 @@ window.editProduct = (id) => {
   document.getElementById('name').value        = product.name || '';
   document.getElementById('category').value    = product.category || 'clothing';
   document.getElementById('subcategory').value = product.subcategory || '';
+  document.getElementById('styleTag').value    = product.styleTag || '';
   document.getElementById('price').value       = product.price || '';
   document.getElementById('description').value = product.description || '';
   document.getElementById('imageUrl').value    = product.image || '';
