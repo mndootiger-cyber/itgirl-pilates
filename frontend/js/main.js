@@ -469,6 +469,18 @@ function openModal(product, api) {
         updateWhatsApp(product);
       });
     });
+
+    // تحديد جدول المقاسات المناسب: بالوزن للبناطيل/الليجن، بالسنتيمتر للباقي
+    const sub = (product.subcategory || '').toLowerCase();
+    const isPantsType = ['بنطلون', 'بناطيل', 'ليجن', 'ليغنز', 'يوجا', 'pants', 'leggings'].some(k => sub.includes(k));
+    const sizeGuideTrigger = document.getElementById('sizeGuideTrigger');
+    if (sizeGuideTrigger) {
+      sizeGuideTrigger.onclick = () => {
+        document.getElementById('sizeGuideWeightTable').style.display = isPantsType ? 'block' : 'none';
+        document.getElementById('sizeGuideCmTable').style.display     = isPantsType ? 'none'  : 'block';
+        document.getElementById('sizeGuideModal').style.display = 'flex';
+      };
+    }
   } else {
     sizesGroup.style.display = 'none';
   }

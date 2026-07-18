@@ -328,8 +328,72 @@
 
       <!-- Sizes -->
       <div class="modal-option-group" id="modalSizesGroup" style="display:none">
-        <div class="modal-option-label">المقاس: <span id="selectedSizeLabel"></span></div>
+        <div class="modal-option-label" style="display:flex;justify-content:space-between;align-items:center">
+          <span>المقاس: <span id="selectedSizeLabel"></span></span>
+          <button type="button" id="sizeGuideTrigger" style="background:none;border:none;color:var(--gold,#C9A96E);font-size:0.8rem;text-decoration:underline;cursor:pointer;padding:0">
+            دليل المقاسات
+          </button>
+        </div>
         <div class="modal-sizes" id="modalSizes"></div>
+      </div>
+
+      <!-- SIZE GUIDE POPUP -->
+      <div id="sizeGuideModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this) this.style.display='none'">
+        <div style="background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.75rem;max-width:480px;width:100%;max-height:85vh;overflow-y:auto">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+            <h3 style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em;font-size:1.3rem;color:#fff;margin:0">دليل المقاسات</h3>
+            <button type="button" onclick="document.getElementById('sizeGuideModal').style.display='none'" style="background:none;border:none;color:#999;font-size:1.5rem;cursor:pointer;line-height:1">×</button>
+          </div>
+
+          <!-- جدول البناطيل/الليجن: بالوزن -->
+          <div id="sizeGuideWeightTable" style="display:none">
+            <p style="color:#999;font-size:0.8rem;margin-bottom:1rem">المقاس حسب الوزن (كجم)</p>
+            <table style="width:100%;border-collapse:collapse;font-size:0.9rem;color:#eee">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.15)">
+                  <th style="padding:0.6rem;text-align:center;color:#C9A96E">المقاس</th>
+                  <th style="padding:0.6rem;text-align:center;color:#C9A96E">الوزن (كجم)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.6rem;text-align:center">S</td><td style="padding:0.6rem;text-align:center">40 - 50</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.6rem;text-align:center">M</td><td style="padding:0.6rem;text-align:center">50 - 60</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.6rem;text-align:center">L</td><td style="padding:0.6rem;text-align:center">65 - 75</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.6rem;text-align:center">XL</td><td style="padding:0.6rem;text-align:center">75 - 80</td></tr>
+                <tr><td style="padding:0.6rem;text-align:center">XXL</td><td style="padding:0.6rem;text-align:center">90 - 110</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- جدول باقي الملابس: بالسنتيمتر -->
+          <div id="sizeGuideCmTable" style="display:none">
+            <p style="color:#999;font-size:0.8rem;margin-bottom:1rem">القياسات بالسنتيمتر (جسم مرتاح، غير مشدود)</p>
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:0.85rem;color:#eee">
+                <thead>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.15)">
+                    <th style="padding:0.6rem;text-align:center;color:#C9A96E">المقاس</th>
+                    <th style="padding:0.6rem;text-align:center;color:#C9A96E">الصدر</th>
+                    <th style="padding:0.6rem;text-align:center;color:#C9A96E">الخصر</th>
+                    <th style="padding:0.6rem;text-align:center;color:#C9A96E">الأرداف</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.55rem;text-align:center">XS</td><td style="padding:0.55rem;text-align:center">78-82</td><td style="padding:0.55rem;text-align:center">60-64</td><td style="padding:0.55rem;text-align:center">86-90</td></tr>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.55rem;text-align:center">S</td><td style="padding:0.55rem;text-align:center">83-87</td><td style="padding:0.55rem;text-align:center">65-69</td><td style="padding:0.55rem;text-align:center">91-95</td></tr>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.55rem;text-align:center">M</td><td style="padding:0.55rem;text-align:center">88-93</td><td style="padding:0.55rem;text-align:center">70-75</td><td style="padding:0.55rem;text-align:center">96-101</td></tr>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.55rem;text-align:center">L</td><td style="padding:0.55rem;text-align:center">94-99</td><td style="padding:0.55rem;text-align:center">76-81</td><td style="padding:0.55rem;text-align:center">102-107</td></tr>
+                  <tr style="border-bottom:1px solid rgba(255,255,255,0.07)"><td style="padding:0.55rem;text-align:center">XL</td><td style="padding:0.55rem;text-align:center">100-106</td><td style="padding:0.55rem;text-align:center">82-88</td><td style="padding:0.55rem;text-align:center">108-114</td></tr>
+                  <tr><td style="padding:0.55rem;text-align:center">XXL</td><td style="padding:0.55rem;text-align:center">107-113</td><td style="padding:0.55rem;text-align:center">89-95</td><td style="padding:0.55rem;text-align:center">115-121</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <p style="color:#777;font-size:0.72rem;margin-top:1rem;line-height:1.6">
+            نصيحة: لو قياساتك بين مقاسين، ننصح باختيار المقاس الأكبر للراحة أثناء الحركة.
+          </p>
+        </div>
       </div>
 
       <div class="modal-availability">
