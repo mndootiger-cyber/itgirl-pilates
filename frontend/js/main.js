@@ -457,16 +457,26 @@ function openModal(product, api) {
   const colorLabel  = document.getElementById('selectedColorLabel');
   if (product.colors?.length) {
     colorsGroup.style.display = 'block';
-    colorsEl.innerHTML = product.colors.map(c => `
-      <button class="color-swatch" data-color="${c}" title="${c}" style="--swatch: ${COLOR_HEX[c] || '#888'}">
-        ${['White','Ivory','BabyPink','LightGray','Beige','SkyBlue'].includes(c) ? '<span class="swatch-border"></span>' : ''}
-      </button>
-    `).join('');
-    colorLabel.textContent = '';
-    colorsEl.querySelectorAll('.color-swatch').forEach(btn => {
+    colorsEl.innerHTML = product.colors.map((c, ci) => {
+      const thumbSrc = api.resolveImageUrl((product.colorImages && product.colorImages[c]) || product.image);
+      return `
+        <button class="color-swatch color-thumb ${ci === 0 ? 'active' : ''}" data-color="${c}" title="${COLOR_LABELS_AR[c] || c}"
+          style="width:52px;height:52px;padding:0;border-radius:8px;overflow:hidden;border:2px solid ${ci === 0 ? 'var(--gold,#C9A96E)' : 'rgba(255,255,255,0.15)'};background:${COLOR_HEX[c] || '#888'};flex-shrink:0">
+          <img src="${thumbSrc}" alt="${COLOR_LABELS_AR[c] || c}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
+        </button>
+      `;
+    }).join('');
+    colorLabel.textContent = COLOR_LABELS_AR[product.colors[0]] || product.colors[0];
+    selectedColor = product.colors[0];
+
+    colorsEl.querySelectorAll('.color-thumb').forEach(btn => {
       btn.addEventListener('click', () => {
-        colorsEl.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
+        colorsEl.querySelectorAll('.color-thumb').forEach(b => {
+          b.classList.remove('active');
+          b.style.borderColor = 'rgba(255,255,255,0.15)';
+        });
         btn.classList.add('active');
+        btn.style.borderColor = 'var(--gold, #C9A96E)';
         selectedColor = btn.dataset.color;
         colorLabel.textContent = COLOR_LABELS_AR[selectedColor] || selectedColor;
 
