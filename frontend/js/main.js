@@ -308,6 +308,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Rating stars
       const stars = product.rating ? renderStars(product.rating) : '';
 
+      // Color swatches (لو المنتج له أكتر من لون)
+      const colorSwatchesHtml = product.colors?.length
+        ? `<div class="card-color-swatches" style="display:flex;gap:6px;padding:8px 0 0;flex-wrap:wrap">
+            ${product.colors.map((c, ci) => `
+              <button
+                type="button"
+                class="card-swatch ${ci === 0 ? 'active' : ''}"
+                data-color="${c}"
+                data-img="${(product.colorImages && product.colorImages[c]) || product.image}"
+                title="${COLOR_LABELS_AR[c] || c}"
+                style="width:16px;height:16px;border-radius:50%;background:${COLOR_HEX[c] || '#888'};border:2px solid ${ci === 0 ? '#C9A96E' : 'rgba(255,255,255,0.25)'};padding:0;cursor:pointer;flex-shrink:0"
+              ></button>
+            `).join('')}
+          </div>`
+        : '';
+
       const card = document.createElement('article');
       card.className = 'product-card';
       card.style.animationDelay = `${Math.min(i * 0.06, 0.4)}s`;
@@ -330,11 +346,27 @@ document.addEventListener('DOMContentLoaded', async () => {
           <h3 class="card-name">${product.name_ar || product.name}</h3>
           ${stars ? `<div class="card-rating">${stars}<span class="card-rating-num">${product.rating}</span></div>` : ''}
           ${priceHtml}
+          ${colorSwatchesHtml}
         </div>
       `;
 
+      // تبديل صورة الكارت عند الضغط على لون، من غير ما يفتح تفاصيل المنتج
+      card.querySelectorAll('.card-swatch').forEach(sw => {
+        sw.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const cardImg = card.querySelector('.card-image img');
+          if (cardImg) cardImg.src = api.resolveImageUrl(sw.dataset.img);
+          card.querySelectorAll('.card-swatch').forEach(s => {
+            s.style.borderColor = 'rgba(255,255,255,0.25)';
+            s.classList.remove('active');
+          });
+          sw.style.borderColor = '#C9A96E';
+          sw.classList.add('active');
+        });
+      });
+
       card.addEventListener('click', (e) => {
-        if (!e.target.closest('.wishlist-btn')) openModal(product, api);
+        if (!e.target.closest('.wishlist-btn') && !e.target.closest('.card-swatch')) openModal(product, api);
       });
       card.addEventListener('keydown', (e) => {
         if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.wishlist-btn')) openModal(product, api);
